@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💙</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(180deg, #0a2540, #0d3b66);
+  color: white;
+  overflow: hidden;
+}
+
+/* TELAS */
+.screen {
+  display: none;
+  height: 100vh;
+  padding: 24px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.active {
+  display: flex;
+}
+
+/* TELA SIM COM FOTO */
+#yesScreen {
+  background:
+    linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.85)),
+    url("fundo.jpg") center/cover no-repeat;
+}
+
+/* TEXTO */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* BOTÕES */
+button {
+  margin-top: 20px;
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background: #1e90ff;
+  color: white;
+}
+
+.btn-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* CARTA */
+.letter {
+  background: rgba(255,255,255,0.15);
+  padding: 22px;
+  border-radius: 18px;
+  margin-top: 20px;
+  min-height: 120px;
+}
+
+/* CORAÇÕES */
+.heart {
+  position: absolute;
+  font-size: 22px;
+  color: #4da6ff;
+  animation: subir 2s linear forwards;
+}
+
+@keyframes subir {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-160px); opacity: 0; }
+}
+
+/* ESCONDE PLAYER */
+audio {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TELA INICIAL -->
+<div class="screen active" id="start">
+  <h1>💙 Valentine’s Day 💙</h1>
+  <p>Você aceita embarcar nessa experiência?</p>
+
+  <div class="btn-group">
+    <button onclick="aceitar()">Sim 💙</button>
+    <button onclick="nao()">Não 😅</button>
+  </div>
+</div>
+
+<!-- TELA NÃO -->
+<div class="screen" id="noScreen">
+  <h1>😈 Boa sorte</h1>
+  <p>∭(x²y + yz³)dV<br>0≤x≤1, 0≤y≤x, 0≤z≤y</p>
+  <input placeholder="Resultado">
+</div>
+
+<!-- TELA SIM -->
+<div class="screen" id="yesScreen">
+  <h1>💙 Para você 💙</h1>
+
+  <div class="letter">
+    <p id="texto"></p>
+  </div>
+
+  <button onclick="proximo()">Próximo 💙</button>
+</div>
+
+<!-- FINAL -->
+<div class="screen" id="final">
+  <h1>💙</h1>
+  <p>Isso não é só uma página.<br>É um sentimento.</p>
+</div>
+
+<!-- AUDIO -->
+<audio id="musica" preload="auto" playsinline>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const partes = [
+  "Desde que você chegou, tudo ficou mais leve 💙",
+  "Seu jeito encontrou um lugar tranquilo em mim.",
+  "Não é sobre datas, é sobre sentir.",
+  "E eu quis te mostrar isso assim."
+];
+
+let i = 0;
+
+function aceitar() {
+  document.getElementById("start").classList.remove("active");
+  document.getElementById("yesScreen").classList.add("active");
+
+  const m = document.getElementById("musica");
+  m.volume = 0;
+  m.play();
+
+  let v = 0;
+  const fade = setInterval(() => {
+    if (v < 0.8) {
+      v += 0.05;
+      m.volume = v;
+    } else {
+      clearInterval(fade);
+    }
+  }, 200);
+
+  proximo();
+}
+
+function nao() {
+  document.getElementById("start").classList.remove("active");
+  document.getElementById("noScreen").classList.add("active");
+}
+
+function proximo() {
+  if (i < partes.length) {
+    document.getElementById("texto").innerText = partes[i];
+    coracoes();
+    i++;
+  } else {
+    document.getElementById("yesScreen").classList.remove("active");
+    document.getElementById("final").classList.add("active");
+  }
+}
+
+function coracoes() {
+  for (let j = 0; j < 8; j++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💙";
+    h.style.left = Math.random() * window.innerWidth + "px";
+    h.style.top = window.innerHeight - 40 + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>
